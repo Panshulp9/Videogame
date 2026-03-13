@@ -13,6 +13,8 @@
 
 //Graphics Libraries
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.*;
 import javax.swing.JFrame;
@@ -22,7 +24,7 @@ import javax.swing.JPanel;
 //*******************************************************************************
 // Class Definition Section
 
-public class BasicGameApp implements Runnable {
+public class BasicGameApp implements Runnable, KeyListener{
 
    //Variable Definition Section
    //Declare the variables used in the program 
@@ -40,6 +42,13 @@ public class BasicGameApp implements Runnable {
 	public BufferStrategy bufferStrategy;
 	public Image astroPic;
     public Image cloudPic;
+    public Image missile;
+    public Clouds[] clouds;
+    public Image skyBack;
+    int Cxpos = (int)(Math.random()*900);
+    int Cypos = (int)(Math.random()*600);
+    public Image Planes;
+
 
    //Declare the objects used in the program
    //These are things that are made up of more than one variable type
@@ -63,10 +72,21 @@ public class BasicGameApp implements Runnable {
       setUpGraphics();
        
       //variable and objects
-      //create (construct) the objects needed for the game and load up 
+      //create (construct) the objects needed for the game and load up
+        skyBack = Toolkit.getDefaultToolkit().getImage("SKYVG.jpeg");
+        Planes = Toolkit.getDefaultToolkit().getImage("350.png");
+
+
 		astroPic = Toolkit.getDefaultToolkit().getImage("astronaut.png"); //load the picture
 		astro = new Astronaut(10,100);
-
+        cloudPic = Toolkit.getDefaultToolkit().getImage("CLOUD.png"); //clouds
+        clouds = new Clouds[5];
+        missile = Toolkit.getDefaultToolkit().getImage("Missile.png");
+        for (int x = 0; x < clouds.length; x++){
+            clouds[x] = new Clouds(Cxpos, Cypos);
+            clouds[x].cloudDx = (int)(Math.random()*5)-5;
+            clouds[x].cloudDy = (int)(Math.random()*5)-5;
+        }
 
 	}// BasicGameApp()
 
@@ -94,6 +114,9 @@ public class BasicGameApp implements Runnable {
 	{
       //calls the move( ) code in the objects
 		astro.move();
+        for (int i = 0; i < clouds.length; i++){
+            clouds[i].move();
+        }
 
 	}
 	
@@ -144,10 +167,36 @@ public class BasicGameApp implements Runnable {
 		g.clearRect(0, 0, WIDTH, HEIGHT);
 
       //draw the image of the astronaut
+        g.drawImage(skyBack, 0, 0, 1000, 700, null);
 		g.drawImage(astroPic, astro.xpos, astro.ypos, astro.width, astro.height, null);
+        g.drawImage(cloudPic, 790, 120, 100, 80, null);
+        g.drawImage(missile, 790, 520, 100, 80, null);
+        for (int y = 0; y < clouds.length; y++){
+            g.drawImage(cloudPic, clouds[y].cloudXpos, clouds[y].cloudYpos, clouds[y].cloudWidth, clouds[y].cloudHeight, null);
+        }
+
+
+
 
 		g.dispose();
 
 		bufferStrategy.show();
 	}
+
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println(e.getKeyCode());
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
 }
