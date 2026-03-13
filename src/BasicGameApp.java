@@ -1,7 +1,7 @@
 //Basic Game Application
 //Version 2
 // Basic Object, Image, Movement
-// Astronaut moves to the right.
+
 // Threaded
 
 //K. Chun 8/2018
@@ -15,6 +15,8 @@
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.*;
 import javax.swing.JFrame;
@@ -24,7 +26,7 @@ import javax.swing.JPanel;
 //*******************************************************************************
 // Class Definition Section
 
-public class BasicGameApp implements Runnable, KeyListener{
+public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
    //Variable Definition Section
    //Declare the variables used in the program 
@@ -40,7 +42,6 @@ public class BasicGameApp implements Runnable, KeyListener{
    public JPanel panel;
    
 	public BufferStrategy bufferStrategy;
-	public Image astroPic;
     public Image cloudPic;
     public Image missile;
     public Clouds[] clouds;
@@ -48,11 +49,15 @@ public class BasicGameApp implements Runnable, KeyListener{
     int Cxpos = (int)(Math.random()*900);
     int Cypos = (int)(Math.random()*600);
     public Image Planes;
+    public Rectangle pointHitbox;
+    public boolean gameOn;
+    public Image end;
 
 
    //Declare the objects used in the program
    //These are things that are made up of more than one variable type
-	private Astronaut astro;
+    private Plane plane;
+    private Missile missiles;
 
 
    // Main method definition
@@ -73,15 +78,15 @@ public class BasicGameApp implements Runnable, KeyListener{
        
       //variable and objects
       //create (construct) the objects needed for the game and load up
+        gameOn = true;
+        end = Toolkit.getDefaultToolkit().getImage("crash.jpg");
         skyBack = Toolkit.getDefaultToolkit().getImage("SKYVG.jpeg");
         Planes = Toolkit.getDefaultToolkit().getImage("350.png");
-
-
-		astroPic = Toolkit.getDefaultToolkit().getImage("astronaut.png"); //load the picture
-		astro = new Astronaut(10,100);
+        plane = new Plane(Cxpos, Cypos);
         cloudPic = Toolkit.getDefaultToolkit().getImage("CLOUD.png"); //clouds
-        clouds = new Clouds[5];
+        clouds = new Clouds[13];
         missile = Toolkit.getDefaultToolkit().getImage("Missile.png");
+        missiles = new Missile((int)(Math.random()*900),(int)(Math.random()*659));
         for (int x = 0; x < clouds.length; x++){
             clouds[x] = new Clouds(Cxpos, Cypos);
             clouds[x].cloudDx = (int)(Math.random()*5)-5;
@@ -113,12 +118,18 @@ public class BasicGameApp implements Runnable, KeyListener{
 	public void moveThings()
 	{
       //calls the move( ) code in the objects
-		astro.move();
         for (int i = 0; i < clouds.length; i++){
             clouds[i].move();
         }
+        missiles.move();
 
 	}
+
+    public void crashing(){
+        if (plane.planebox.intersects(missiles.hitbox)){
+            gameOn = false;
+        }
+    }
 	
    //Pauses or sleeps the computer for the amount specified in milliseconds
    public void pause(int time ){
@@ -143,6 +154,8 @@ public class BasicGameApp implements Runnable, KeyListener{
       canvas = new Canvas();  
       canvas.setBounds(0, 0, WIDTH, HEIGHT);
       canvas.setIgnoreRepaint(true);
+      canvas.addKeyListener(this);
+      canvas.addMouseListener(this);
    
       panel.add(canvas);  // adds the canvas to the panel.
    
@@ -168,12 +181,18 @@ public class BasicGameApp implements Runnable, KeyListener{
 
       //draw the image of the astronaut
         g.drawImage(skyBack, 0, 0, 1000, 700, null);
-		g.drawImage(astroPic, astro.xpos, astro.ypos, astro.width, astro.height, null);
         g.drawImage(cloudPic, 790, 120, 100, 80, null);
-        g.drawImage(missile, 790, 520, 100, 80, null);
+       if (missiles.isAlive == true) {
+           g.drawImage(missile, missiles.mxpos, missiles.mypos, 200, 160, null);
+       }
         for (int y = 0; y < clouds.length; y++){
             g.drawImage(cloudPic, clouds[y].cloudXpos, clouds[y].cloudYpos, clouds[y].cloudWidth, clouds[y].cloudHeight, null);
         }
+        g.drawImage(Planes, plane.Planexpos, plane.Planeypos, 70, 30, null);
+        if (gameOn = false){
+            g.drawImage(end, 0, 0, 1000, 700, null);
+        }
+
 
 
 
@@ -191,12 +210,54 @@ public class BasicGameApp implements Runnable, KeyListener{
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyCode());
-
+        if (e.getKeyCode() == 38){
+            System.out.println("going up");
+            plane.Planeypos = plane.Planeypos-10;
+        }
+        if (e.getKeyCode() == 37){
+            System.out.println("going left");
+            plane.Planexpos = plane.Planexpos-5;
+        }
+        if (e.getKeyCode() == 39){
+            System.out.println("going right");
+            plane.Planexpos = plane.Planexpos+5;
+        }
+        if(e.getKeyCode() == 40){
+            System.out.println("going down");
+            plane.Planeypos = plane.Planeypos+ 10;
+        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        pointHitbox = new Rectangle(e.getX(),e.getY(),1,1);
+        if (missiles.hitbox.intersects(pointHitbox)){
+            missiles.isAlive = false;
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
 
     }
 }
