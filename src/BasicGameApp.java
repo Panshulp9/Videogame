@@ -54,6 +54,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     public Image end;
 
 
+
    //Declare the objects used in the program
    //These are things that are made up of more than one variable type
     private Plane plane;
@@ -110,7 +111,8 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
          moveThings();  //move all the game objects
          render();  // paint the graphics
-         pause(20); // sleep for 10 ms
+         pause(20);// sleep for 10 ms
+            crashing();
 		}
 	}
 
@@ -128,6 +130,9 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     public void crashing(){
         if (plane.planebox.intersects(missiles.hitbox)){
             gameOn = false;
+        }
+        if (clouds.cloudbox.intersects(plane.planebox)){
+
         }
     }
 	
@@ -189,7 +194,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             g.drawImage(cloudPic, clouds[y].cloudXpos, clouds[y].cloudYpos, clouds[y].cloudWidth, clouds[y].cloudHeight, null);
         }
         g.drawImage(Planes, plane.Planexpos, plane.Planeypos, 70, 30, null);
-        if (gameOn = false){
+        if (gameOn == false){
             g.drawImage(end, 0, 0, 1000, 700, null);
         }
 
@@ -211,19 +216,15 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == 38){
-            System.out.println("going up");
             plane.Planeypos = plane.Planeypos-10;
         }
         if (e.getKeyCode() == 37){
-            System.out.println("going left");
             plane.Planexpos = plane.Planexpos-5;
         }
         if (e.getKeyCode() == 39){
-            System.out.println("going right");
             plane.Planexpos = plane.Planexpos+5;
         }
         if(e.getKeyCode() == 40){
-            System.out.println("going down");
             plane.Planeypos = plane.Planeypos+ 10;
         }
     }

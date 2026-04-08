@@ -16,7 +16,7 @@ public Clouds(int Cxpos, int Cypos){
     cloudDy = 1;
     cloudXpos = Cxpos;
     cloudYpos = Cypos;
-    Rectangle cloudbox = new Rectangle(cloudXpos,cloudYpos,cloudWidth,cloudHeight);
+    cloudbox = new Rectangle(cloudXpos,cloudYpos,cloudWidth,cloudHeight);
 }
     public void move() {
         if(cloudYpos>700){//wrap when hitting the bottom wall
@@ -33,6 +33,6 @@ public Clouds(int Cxpos, int Cypos){
         }
         cloudXpos = cloudXpos + cloudDx;
         cloudYpos = cloudYpos + cloudDy;
-        Rectangle cloudbox = new Rectangle(cloudXpos,cloudYpos,cloudWidth,cloudHeight);
+        cloudbox = new Rectangle(cloudXpos,cloudYpos,cloudWidth,cloudHeight);
     }
 }
