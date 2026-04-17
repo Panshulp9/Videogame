@@ -132,7 +132,8 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             gameOn = false;
         }
         if (clouds.cloudbox.intersects(plane.planebox)){
-
+            plane.Planeypos = (int)(Math.random()*670);
+            plane.Planexpos = (int)(Math.random()*970);
         }
     }
 	
