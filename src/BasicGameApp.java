@@ -124,17 +124,25 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             clouds[i].move();
         }
         missiles.move();
+        plane.move();
 
 	}
 
-    public void crashing(){
-        if (plane.planebox.intersects(missiles.hitbox)){
+    public void crashing() {
+        if (plane.planebox.intersects(missiles.hitbox)) {
             gameOn = false;
+
         }
-        if (clouds.cloudbox.intersects(plane.planebox)){
-            plane.Planeypos = (int)(Math.random()*670);
-            plane.Planexpos = (int)(Math.random()*970);
+        for (int r = 0; r < clouds.length; r++) {
+            if (clouds[r].cloudbox.intersects(plane.planebox)) {
+                plane.Planeypos = (int) (Math.random() * 670);
+                plane.Planexpos = (int) (Math.random() * 970);
+                plane.planebox.x = plane.Planexpos;
+                plane.planebox.y = plane.Planeypos;
+
+            }
         }
+
     }
 	
    //Pauses or sleeps the computer for the amount specified in milliseconds
@@ -189,15 +197,18 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         g.drawImage(skyBack, 0, 0, 1000, 700, null);
         g.drawImage(cloudPic, 790, 120, 100, 80, null);
        if (missiles.isAlive == true) {
-           g.drawImage(missile, missiles.mxpos, missiles.mypos, 200, 160, null);
+           g.drawImage(missile, missiles.mxpos, missiles.mypos, missiles.mWidth, missiles.mHeight, null);
+       }
+        else{
+
        }
         for (int y = 0; y < clouds.length; y++){
             g.drawImage(cloudPic, clouds[y].cloudXpos, clouds[y].cloudYpos, clouds[y].cloudWidth, clouds[y].cloudHeight, null);
         }
         g.drawImage(Planes, plane.Planexpos, plane.Planeypos, 70, 30, null);
-        if (gameOn == false){
-            g.drawImage(end, 0, 0, 1000, 700, null);
+        if (gameOn == false){g.drawImage(end, 0, 0, 1000, 700, null);
         }
+
 
 
 

@@ -7,6 +7,8 @@ public class Missile {
     public int mypos;
     public Rectangle hitbox;
     public boolean isAlive;
+    public int mWidth;
+    public int mHeight;
 
 
     public Missile(int MXPOS, int MYPOS){
@@ -15,7 +17,9 @@ public class Missile {
         mdy = (int)(Math.random()*7)-7;
         mxpos = MXPOS;
         mypos = MYPOS;
-        hitbox = new Rectangle(mxpos,mypos,200,160);
+        mHeight = 60;
+        mWidth = 90;
+        hitbox = new Rectangle(mxpos,mypos,mWidth,mHeight);
     }
     public void move() {
         if(mypos>700){//wrap when hitting the bottom wall
@@ -32,7 +36,7 @@ public class Missile {
         }
         mxpos = mxpos + mdx;
         mypos = mypos + mdy;
-        hitbox = new Rectangle(mxpos,mypos,200,160);
+        hitbox = new Rectangle(mxpos,mypos,mWidth,mHeight);
 
     }
 }

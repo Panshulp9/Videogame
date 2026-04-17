@@ -16,8 +16,8 @@ public class Plane {
         planebox = new Rectangle(Planexpos,Planeypos,70,30);
     }
     public void move() {
-       Planexpos = Planexpos + DX;
-        Planeypos = Planeypos + DY;
+        //Planexpos = Planexpos + DX;
+       // Planeypos = Planeypos + DY;
         planebox = new Rectangle(Planexpos,Planeypos,70,30);
 
     }
