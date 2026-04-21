@@ -131,6 +131,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     public void crashing() {
         if (plane.planebox.intersects(missiles.hitbox)) {
             gameOn = false;
+            missiles.isAlive = false;
 
         }
         for (int r = 0; r < clouds.length; r++) {
@@ -199,14 +200,12 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
        if (missiles.isAlive == true) {
            g.drawImage(missile, missiles.mxpos, missiles.mypos, missiles.mWidth, missiles.mHeight, null);
        }
-        else{
-
-       }
         for (int y = 0; y < clouds.length; y++){
             g.drawImage(cloudPic, clouds[y].cloudXpos, clouds[y].cloudYpos, clouds[y].cloudWidth, clouds[y].cloudHeight, null);
         }
         g.drawImage(Planes, plane.Planexpos, plane.Planeypos, 70, 30, null);
-        if (gameOn == false){g.drawImage(end, 0, 0, 1000, 700, null);
+        if (gameOn == false){
+            g.drawImage(end, 0, 0, 1000, 700, null);
         }
 
 

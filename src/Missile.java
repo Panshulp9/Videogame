@@ -19,7 +19,10 @@ public class Missile {
         mypos = MYPOS;
         mHeight = 60;
         mWidth = 90;
-        hitbox = new Rectangle(mxpos,mypos,mWidth,mHeight);
+        if (isAlive == true){
+            hitbox = new Rectangle(mxpos,mypos,mWidth,mHeight);
+        }
+
     }
     public void move() {
         if(mypos>700){//wrap when hitting the bottom wall
@@ -36,7 +39,9 @@ public class Missile {
         }
         mxpos = mxpos + mdx;
         mypos = mypos + mdy;
-        hitbox = new Rectangle(mxpos,mypos,mWidth,mHeight);
+        if (isAlive == true){
+            hitbox = new Rectangle(mxpos,mypos,mWidth,mHeight);
+        }
 
     }
 }
