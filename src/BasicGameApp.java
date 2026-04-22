@@ -46,6 +46,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     public Image missile;
     public Clouds[] clouds;
     public Image skyBack;
+    public Image startScreen;
     int Cxpos = (int)(Math.random()*900);
     int Cypos = (int)(Math.random()*600);
     public Image Planes;
@@ -79,7 +80,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
        
       //variable and objects
       //create (construct) the objects needed for the game and load up
-        gameOn = true;
+        gameOn = false;
         end = Toolkit.getDefaultToolkit().getImage("crash.jpg");
         skyBack = Toolkit.getDefaultToolkit().getImage("SKYVG.jpeg");
         Planes = Toolkit.getDefaultToolkit().getImage("350.png");
@@ -93,6 +94,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             clouds[x].cloudDx = (int)(Math.random()*5)-5;
             clouds[x].cloudDy = (int)(Math.random()*5)-5;
         }
+        startScreen = Toolkit.getDefaultToolkit().getImage("start.jpg");
 
 	}// BasicGameApp()
 
@@ -119,19 +121,22 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
 	public void moveThings()
 	{
-      //calls the move( ) code in the objects
-        for (int i = 0; i < clouds.length; i++){
-            clouds[i].move();
+        if (gameOn == true) {
+            //calls the move( ) code in the objects
+            for (int i = 0; i < clouds.length; i++) {
+                clouds[i].move();
+            }
+            missiles.move();
+            plane.move();
         }
-        missiles.move();
-        plane.move();
 
 	}
 
     public void crashing() {
-        if (plane.planebox.intersects(missiles.hitbox)) {
+        if (plane.planebox.intersects(missiles.hitbox)&& missiles.isAlive==true) {
             gameOn = false;
             missiles.isAlive = false;
+            plane.isFlying = false;
 
         }
         for (int r = 0; r < clouds.length; r++) {
@@ -195,16 +200,21 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 		g.clearRect(0, 0, WIDTH, HEIGHT);
 
       //draw the image of the astronaut
-        g.drawImage(skyBack, 0, 0, 1000, 700, null);
-        g.drawImage(cloudPic, 790, 120, 100, 80, null);
-       if (missiles.isAlive == true) {
-           g.drawImage(missile, missiles.mxpos, missiles.mypos, missiles.mWidth, missiles.mHeight, null);
+       if (gameOn == false){
+           g.drawImage(startScreen, 0, 0, 1000, 700, null);
        }
-        for (int y = 0; y < clouds.length; y++){
-            g.drawImage(cloudPic, clouds[y].cloudXpos, clouds[y].cloudYpos, clouds[y].cloudWidth, clouds[y].cloudHeight, null);
-        }
-        g.drawImage(Planes, plane.Planexpos, plane.Planeypos, 70, 30, null);
-        if (gameOn == false){
+       if (gameOn == true) {
+           g.drawImage(skyBack, 0, 0, 1000, 700, null);
+           if (missiles.isAlive == true) {
+               g.drawImage(missile, missiles.mxpos, missiles.mypos, missiles.mWidth, missiles.mHeight, null);
+               //g.drawRect(missiles);
+           }
+           for (int y = 0; y < clouds.length; y++) {
+               g.drawImage(cloudPic, clouds[y].cloudXpos, clouds[y].cloudYpos, clouds[y].cloudWidth, clouds[y].cloudHeight, null);
+           }
+           g.drawImage(Planes, plane.Planexpos, plane.Planeypos, 70, 30, null);
+       }
+        if (plane.isFlying == false){
             g.drawImage(end, 0, 0, 1000, 700, null);
         }
 
@@ -252,10 +262,16 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        pointHitbox = new Rectangle(e.getX(),e.getY(),1,1);
-        if (missiles.hitbox.intersects(pointHitbox)){
-            missiles.isAlive = false;
+        if (gameOn == false){
+            gameOn = true;
         }
+        if (gameOn == true) {
+            pointHitbox = new Rectangle(e.getX(), e.getY(), 1, 1);
+            if (missiles.hitbox.intersects(pointHitbox)) {
+                missiles.isAlive = false;
+            }
+        }
+
     }
 
     @Override

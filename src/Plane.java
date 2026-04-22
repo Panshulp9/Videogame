@@ -6,6 +6,7 @@ public class Plane {
     public int DX;
     public int DY;
     public Rectangle planebox;
+    public boolean isFlying;
 
 
     public Plane(int XPOS, int YPOS){
@@ -13,6 +14,7 @@ public class Plane {
         Planeypos = YPOS;
         DX = 2;
         DY = 1;
+        isFlying = true;
         planebox = new Rectangle(Planexpos,Planeypos,70,30);
     }
     public void move() {
