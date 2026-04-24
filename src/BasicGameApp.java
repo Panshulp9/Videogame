@@ -45,6 +45,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     public Image cloudPic;
     public Image missile;
     public Clouds[] clouds;
+    public Missile[] bombs;
     public Image skyBack;
     public Image startScreen;
     int Cxpos = (int)(Math.random()*900);
@@ -53,6 +54,8 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     public Rectangle pointHitbox;
     public boolean gameOn;
     public Image end;
+    public int countDown;
+
 
 
 
@@ -81,12 +84,14 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
       //variable and objects
       //create (construct) the objects needed for the game and load up
         gameOn = false;
+        countDown = 39;
         end = Toolkit.getDefaultToolkit().getImage("crash.jpg");
         skyBack = Toolkit.getDefaultToolkit().getImage("SKYVG.jpeg");
         Planes = Toolkit.getDefaultToolkit().getImage("350.png");
         plane = new Plane(Cxpos, Cypos);
         cloudPic = Toolkit.getDefaultToolkit().getImage("CLOUD.png"); //clouds
         clouds = new Clouds[13];
+        bombs = new Missile[19];
         missile = Toolkit.getDefaultToolkit().getImage("Missile.png");
         missiles = new Missile((int)(Math.random()*900),(int)(Math.random()*659));
         for (int x = 0; x < clouds.length; x++){
@@ -207,7 +212,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
            g.drawImage(skyBack, 0, 0, 1000, 700, null);
            if (missiles.isAlive == true) {
                g.drawImage(missile, missiles.mxpos, missiles.mypos, missiles.mWidth, missiles.mHeight, null);
-               //g.drawRect(missiles);
+
            }
            for (int y = 0; y < clouds.length; y++) {
                g.drawImage(cloudPic, clouds[y].cloudXpos, clouds[y].cloudYpos, clouds[y].cloudWidth, clouds[y].cloudHeight, null);

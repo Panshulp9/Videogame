@@ -25,17 +25,17 @@ public class Missile {
 
     }
     public void move() {
-        if(mypos>700){//wrap when hitting the bottom wall
-            mdy = -mdy;
+        if(mypos > 700){ //wrap when hitting the bottom wall
+            mypos = 1;
         }
-        if(mypos<0){//wrap when hitting the top
-            mdy = -mdy;
+        if(mypos < 0){ //wrap when hitting the top
+            mypos = 699;
         }
-        if(mxpos>1000){
-            mdx = -mdx;
+        if(mxpos > 1000){
+            mxpos = 1;
         }
-        if(mxpos<0){
-            mdx = -mdx;
+        if(mxpos < 0){
+            mxpos = 999;
         }
         mxpos = mxpos + mdx;
         mypos = mypos + mdy;
