@@ -212,7 +212,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
            for (int y = 0; y < clouds.length; y++) {
                g.drawImage(cloudPic, clouds[y].cloudXpos, clouds[y].cloudYpos, clouds[y].cloudWidth, clouds[y].cloudHeight, null);
            }
-           g.drawImage(Planes, plane.Planexpos, plane.Planeypos, 70, 30, null);
+           g.drawImage(Planes, plane.Planexpos, plane.Planeypos, 100, 45, null);
        }
         if (plane.isFlying == false){
             g.drawImage(end, 0, 0, 1000, 700, null);

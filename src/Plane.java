@@ -15,12 +15,12 @@ public class Plane {
         DX = 2;
         DY = 1;
         isFlying = true;
-        planebox = new Rectangle(Planexpos,Planeypos,70,30);
+        planebox = new Rectangle(Planexpos,Planeypos,100,45);
     }
     public void move() {
         //Planexpos = Planexpos + DX;
        // Planeypos = Planeypos + DY;
-        planebox = new Rectangle(Planexpos,Planeypos,70,30);
+        planebox = new Rectangle(Planexpos,Planeypos,100,45);
 
     }
 }
