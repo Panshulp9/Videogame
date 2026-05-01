@@ -19,10 +19,10 @@ public Clouds(int Cxpos, int Cypos){
     cloudbox = new Rectangle(cloudXpos,cloudYpos,cloudWidth,cloudHeight);
 }
     public void move() {
-        if(cloudYpos>700){//wrap when hitting the bottom wall
+        if(cloudYpos>700){//bounce when hitting the bottom wall
             cloudDy = -cloudDy;
         }
-        if(cloudYpos<0){//wrap when hitting the top
+        if(cloudYpos<0){//bounce when hitting the top
             cloudDy = -cloudDy;
         }
         if(cloudXpos>1000){

@@ -9,7 +9,7 @@ public class Plane {
     public boolean isFlying;
 
 
-    public Plane(int XPOS, int YPOS){
+    public Plane(int XPOS, int YPOS) {
         Planexpos = XPOS;
         Planeypos = YPOS;
         DX = 2;
@@ -18,8 +18,6 @@ public class Plane {
         planebox = new Rectangle(Planexpos,Planeypos,100,45);
     }
     public void move() {
-        //Planexpos = Planexpos + DX;
-       // Planeypos = Planeypos + DY;
         planebox = new Rectangle(Planexpos,Planeypos,100,45);
 
     }

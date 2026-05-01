@@ -13,15 +13,13 @@ public class Missile {
 
     public Missile(int MXPOS, int MYPOS){
         mdx = (int)(Math.random()*7)-7;
-        isAlive = true;
+        isAlive = false;
         mdy = (int)(Math.random()*7)-7;
         mxpos = MXPOS;
         mypos = MYPOS;
         mHeight = 60;
         mWidth = 90;
-        if (isAlive == true){
             hitbox = new Rectangle(mxpos,mypos,mWidth,mHeight);
-        }
 
     }
     public void move() {
@@ -39,9 +37,8 @@ public class Missile {
         }
         mxpos = mxpos + mdx;
         mypos = mypos + mdy;
-        if (isAlive == true){
-            hitbox = new Rectangle(mxpos,mypos,mWidth,mHeight);
-        }
+        hitbox = new Rectangle(mxpos,mypos,mWidth,mHeight);
+
 
     }
 }

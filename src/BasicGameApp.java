@@ -65,7 +65,6 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
    //These are things that are made up of more than one variable type
     public Plane plane;
     public Missile missiles;
-    //public Missle[] missilesArray = new Missle[19]
 
    // Main method definition
    // This is the code that runs first and automatically
@@ -85,6 +84,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
        
       //variable and objects
       //create (construct) the objects needed for the game and load up
+        //made arrays for missiles and clouds
         gameOn = false;
         end = Toolkit.getDefaultToolkit().getImage("crash.jpg");
         skyBack = Toolkit.getDefaultToolkit().getImage("SKYVG.jpeg");
@@ -101,6 +101,9 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             bombs[y].mdx = (int)(Math.random()*7)-7;
             bombs[y].mdy = (int)(Math.random()*7)-7;
         }
+        bombs[0].isAlive = true;
+
+
         for (int x = 0; x < clouds.length; x++){
             clouds[x] = new Clouds(Cxpos, Cypos);
             clouds[x].cloudDx = (int)(Math.random()*5)-5;
@@ -128,13 +131,16 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
          render();  // paint the graphics
          pause(20);// sleep for 10 ms
             crashing();
-
+// this variable is for spacing out the timing of the bombs and the numbombs made is linked with the timing so after 70, new bomb is made
         countVariable++;
         if (countVariable % 70 == 0){
+            if (numBombsMade == 19){
+                numBombsMade = 0;
+            }
+            bombs[numBombsMade].isAlive = true;
             numBombsMade++;
+
         }
-        for (int q = 0; q < numBombsMade; q++)
-            bombs[q].isAlive = true;
 		}
 	}
 
@@ -156,13 +162,16 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 	}
 
     public void crashing() {
+        // this does the ending of the game with missile and airplane
         if (plane.planebox.intersects(missiles.hitbox)&& missiles.isAlive==true) {
+            System.out.println("here");
             gameOn = false;
             missiles.isAlive = false;
             plane.isFlying = false;
 
         }
         for (int w = 0; w < numBombsMade; w++){
+            // this is another interaction for the array of added bombs
             if (plane.planebox.intersects(bombs[w].hitbox) && bombs[w].isAlive == true){
                 gameOn = false;
                 bombs[w].isAlive = false;
@@ -170,6 +179,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
             }
         }
         for (int r = 0; r < clouds.length; r++) {
+            // this is for clouds and airplane and airplane moves to random location
             if (clouds[r].cloudbox.intersects(plane.planebox)) {
                 plane.Planeypos = (int) (Math.random() * 670);
                 plane.Planexpos = (int) (Math.random() * 970);
@@ -204,6 +214,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
       canvas = new Canvas();  
       canvas.setBounds(0, 0, WIDTH, HEIGHT);
       canvas.setIgnoreRepaint(true);
+      //adds my key and mouse movements
       canvas.addKeyListener(this);
       canvas.addMouseListener(this);
    
@@ -242,7 +253,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
            //System.out.println(numBombsMade);
 
                for(int i = 0; i < numBombsMade; i++) {
-                   if (bombs[i].isAlive == true) {
+                   if (bombs[i].isAlive) {
                        System.out.println(i);
                        g.drawImage(missile, bombs[i].mxpos, bombs[i].mypos, bombs[i].mWidth, bombs[i].mHeight, null);
                        g.drawRect(bombs[i].hitbox.x, bombs[i].hitbox.y, bombs[i].hitbox.width, bombs[i].hitbox.height);
@@ -254,7 +265,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
            }
            g.drawImage(Planes, plane.Planexpos, plane.Planeypos, 100, 45, null);
        }
-        if (plane.isFlying == false){
+        if (!plane.isFlying){
             g.drawImage(end, 0, 0, 1000, 700, null);
         }
 
@@ -302,16 +313,18 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (gameOn == false){
+        if (!gameOn){
             gameOn = true;
         }
-        if (gameOn == true) {
+        if (gameOn) {
             pointHitbox = new Rectangle(e.getX(), e.getY(), 1, 1);
             if (missiles.hitbox.intersects(pointHitbox)) {
                 missiles.isAlive = false;
             }
             for (int o = 0; o < numBombsMade; o++){
+                System.out.println("bomb");
                 if (bombs[o].hitbox.intersects(pointHitbox)) {
+                    System.out.println("hit");
                     bombs[o].isAlive = false;
                 }
             }
